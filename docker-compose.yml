@@ -21,7 +21,7 @@ services:
     networks:
       - monitoring
     volumes:
-      - "prometheus-data:/prometheus"
+      # - "prometheus-data:/prometheus"
       # - "./prometheus.yaml:/etc/prometheus/prometheus.yaml"
     command:
       # - "--config.file=/etc/prometheus/prometheus.yaml"
