@@ -21,7 +21,7 @@ services:
     networks:
       - monitoring
     volumes:
-      - "./v3/prometheus-scrape-config.yml:/etc/prometheus/prometheus.yml" # Chemin corrigé
+      - "prometheus-scrape-config.yml:/etc/prometheus/prometheus.yml" # Chemin corrigé
       - "prometheus-data:/prometheus"
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
@@ -46,9 +46,9 @@ services:
       - DS_PROMETHEUS=prometheus
     volumes:
       - "grafana-data:/var/lib/grafana"
-      - "./v3/grafana-datasource-config.yml:/etc/grafana/provisioning/datasources/datasources.yml" # Chemin corrigé
-      - "./v3/dashboards:/var/lib/grafana/dashboards" # Chemin corrigé
-      - "./v3/default.yml:/etc/grafana/provisioning/dashboards/default.yml" # Chemin corrigé
+      - "grafana-datasource-config.yml:/etc/grafana/provisioning/datasources/datasources.yml" # Chemin corrigé
+      - "dashboards:/var/lib/grafana/dashboards" # Chemin corrigé
+      - "default.yml:/etc/grafana/provisioning/dashboards/default.yml" # Chemin corrigé
     privileged: true
     depends_on:
       - prometheus
@@ -61,7 +61,7 @@ services:
   nginx:
     image: nginx:latest
     volumes:
-      - "./v3/nginx.conf:/etc/nginx/nginx.conf" # Chemin corrigé
+      - "nginx.conf:/etc/nginx/nginx.conf" # Chemin corrigé
       - "nginx-logs:/var/log/nginx"
     ports:
       - "9393:9090" # Exposition de Nginx pour Prometheus
