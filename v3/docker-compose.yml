@@ -20,7 +20,7 @@ services:
     image: prom/prometheus:latest
     networks:
       - monitoring
-      - default
+      # - default
     volumes:
       - "./prometheus-scrape-config.yml:/etc/prometheus/prometheus.yml"
       - "prometheus-data:/prometheus"
@@ -42,7 +42,7 @@ services:
     image: grafana/grafana:latest
     networks:
       - monitoring
-      - default
+      # - default
     environment:
       - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
       - DS_PROMETHEUS=prometheus
@@ -87,5 +87,5 @@ volumes:
 networks:
   monitoring:
     driver: bridge
-  default:
-    external: true
+  # default:
+  #   external: true
