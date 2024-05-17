@@ -20,9 +20,8 @@ services:
     image: prom/prometheus:latest
     networks:
       - monitoring
-      # - default
     volumes:
-      - "prometheus-scrape-config.yml:/etc/prometheus/prometheus.yml"
+      - "./v3/prometheus-scrape-config.yml:/etc/prometheus/prometheus.yml" # Chemin corrigé
       - "prometheus-data:/prometheus"
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
@@ -42,18 +41,14 @@ services:
     image: grafana/grafana:latest
     networks:
       - monitoring
-      # - default
     environment:
       - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
       - DS_PROMETHEUS=prometheus
     volumes:
       - "grafana-data:/var/lib/grafana"
-      - "grafana-datasource-config.yml:/etc/grafana/provisioning/datasources/datasources.yml"
-      # - "./dashboards/prometheus:/var/lib/grafana/dashboards/prometheus"
-      # - "./dashboards/grafana:/var/lib/grafana/dashboards/grafana"
-      # - "./dashboards/cadvisor:/var/lib/grafana/dashboards/cadvisor"
-      - "dashboards:/var/lib/grafana/dashboards"
-      - "default.yml:/etc/grafana/provisioning/dashboards/default.yml"
+      - "./v3/grafana-datasource-config.yml:/etc/grafana/provisioning/datasources/datasources.yml" # Chemin corrigé
+      - "./v3/dashboards:/var/lib/grafana/dashboards" # Chemin corrigé
+      - "./v3/default.yml:/etc/grafana/provisioning/dashboards/default.yml" # Chemin corrigé
     privileged: true
     depends_on:
       - prometheus
@@ -66,11 +61,9 @@ services:
   nginx:
     image: nginx:latest
     volumes:
-      - nginx.conf:/etc/nginx/nginx.conf
-      - nginx-logs:/var/log/nginx
+      - "./v3/nginx.conf:/etc/nginx/nginx.conf" # Chemin corrigé
+      - "nginx-logs:/var/log/nginx"
     ports:
-      # - "9090:9090" # Exposition de Nginx pour Prometheus
-      # - "3000:3000" # Exposition de Nginx pour Grafana
       - "9393:9090" # Exposition de Nginx pour Prometheus
       - "3030:3000" # Exposition de Nginx pour Grafana
     networks:
@@ -87,5 +80,3 @@ volumes:
 networks:
   monitoring:
     driver: bridge
-  # default:
-  #   external: true
