@@ -22,9 +22,9 @@ services:
       - monitoring
     volumes:
       - "prometheus-data:/prometheus"
-      - "./prometheus.yaml:/etc/prometheus/prometheus.yaml" # Chemin corrigé
+      # - "./prometheus.yaml:/etc/prometheus/prometheus.yaml"
     command:
-      - "--config.file=/etc/prometheus/prometheus.yaml"
+      # - "--config.file=/etc/prometheus/prometheus.yaml"
       - "--storage.tsdb.path=/prometheus"
       - "--storage.tsdb.retention.time=200h"
     privileged: true
