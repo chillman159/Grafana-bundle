@@ -23,10 +23,10 @@ services:
     # volumes:
     # - "prometheus-data:/prometheus"
     # - "./prometheus.yaml:/etc/prometheus/prometheus.yaml"
-    command:
-      # - "--config.file=/etc/prometheus/prometheus.yaml"
-      - "--storage.tsdb.path=/prometheus"
-      - "--storage.tsdb.retention.time=200h"
+    # command:
+    # - "--config.file=/etc/prometheus/prometheus.yaml"
+    # - "--storage.tsdb.path=/prometheus"
+    # - "--storage.tsdb.retention.time=200h"
     privileged: true
     depends_on:
       - cadvisor
