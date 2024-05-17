@@ -22,8 +22,8 @@ services:
       - monitoring
       # - default
     volumes:
-      - "./prometheus-scrape-config.yml:/etc/prometheus/prometheus.yml"
-      - "prometheus-data:/prometheus"
+      - "./v3/prometheus-scrape-config.yml:/etc/prometheus/prometheus.yml"
+      - "./v3/prometheus-data:/prometheus"
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
       - "--storage.tsdb.path=/prometheus"
@@ -47,13 +47,13 @@ services:
       - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
       - DS_PROMETHEUS=prometheus
     volumes:
-      - "grafana-data:/var/lib/grafana"
-      - "./grafana-datasource-config.yml:/etc/grafana/provisioning/datasources/datasources.yml"
+      - "./v3/grafana-data:/var/lib/grafana"
+      - "./v3/grafana-datasource-config.yml:/etc/grafana/provisioning/datasources/datasources.yml"
       # - "./dashboards/prometheus:/var/lib/grafana/dashboards/prometheus"
       # - "./dashboards/grafana:/var/lib/grafana/dashboards/grafana"
       # - "./dashboards/cadvisor:/var/lib/grafana/dashboards/cadvisor"
-      - "./dashboards:/var/lib/grafana/dashboards"
-      - "./default.yml:/etc/grafana/provisioning/dashboards/default.yml"
+      - "./v3/dashboards:/var/lib/grafana/dashboards"
+      - "./v3/default.yml:/etc/grafana/provisioning/dashboards/default.yml"
     privileged: true
     depends_on:
       - prometheus
@@ -66,8 +66,8 @@ services:
   nginx:
     image: nginx:latest
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-      - nginx-logs:/var/log/nginx
+      - ./v3/nginx.conf:/etc/nginx/nginx.conf
+      - ./v3/nginx-logs:/var/log/nginx
     ports:
       # - "9090:9090" # Exposition de Nginx pour Prometheus
       # - "3000:3000" # Exposition de Nginx pour Grafana
