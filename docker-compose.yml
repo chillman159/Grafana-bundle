@@ -21,10 +21,10 @@ services:
     networks:
       - monitoring
     volumes:
-      - "./prometheus-scrape-config.yaml:/etc/prometheus/prometheus.yml" # Chemin corrigé
+      - "./prometheus-scrape-config.yaml:/etc/prometheus/prometheus.yaml" # Chemin corrigé
       - "prometheus-data:/prometheus"
     command:
-      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--config.file=/etc/prometheus/prometheus.yaml"
       - "--storage.tsdb.path=/prometheus"
       - "--storage.tsdb.retention.time=200h"
     privileged: true
