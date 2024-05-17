@@ -62,7 +62,8 @@ services:
     image: nginx:latest
     volumes:
       # - "./nginx.conf:/etc/nginx/nginx.conf" # Chemin corrigé
-      - "./nginx.conf:/etc/nginx/conf.d/default.conf" # Chemin corrigé
+      # - "./nginx.conf:/etc/nginx/sites-available/default.conf" # Chemin corrigé
+      - "./nginx.conf:/etc/nginx/sites-available/default" # Chemin corrigé
       - "nginx-logs:/var/log/nginx"
     ports:
       - "9393:9090" # Exposition de Nginx pour Prometheus
