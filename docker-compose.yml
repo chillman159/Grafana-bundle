@@ -21,8 +21,8 @@ services:
     networks:
       - monitoring
     volumes:
-      - "./prometheus-scrape-config.yaml:/etc/prometheus/prometheus.yaml" # Chemin corrigé
       - "prometheus-data:/prometheus"
+      - "./prometheus.yaml:/etc/prometheus/prometheus.yaml" # Chemin corrigé
     command:
       - "--config.file=/etc/prometheus/prometheus.yaml"
       - "--storage.tsdb.path=/prometheus"
