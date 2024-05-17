@@ -21,10 +21,10 @@ services:
     networks:
       - monitoring
     volumes:
-      - "./prometheus-scrape-config.yml:/etc/prometheus/prometheus.yml" # Chemin corrigé
+      - "./prometheus-scrape-config.yaml:/etc/prometheus/prometheus.yaml" # Chemin corrigé
       - "prometheus-data:/prometheus"
     command:
-      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--config.file=/etc/prometheus/prometheus.yaml"
       - "--storage.tsdb.path=/prometheus"
       - "--storage.tsdb.retention.time=200h"
     privileged: true
@@ -46,9 +46,9 @@ services:
       - DS_PROMETHEUS=prometheus
     volumes:
       - "grafana-data:/var/lib/grafana"
-      - "./grafana-datasource-config.yml:/etc/grafana/provisioning/datasources/datasources.yml" # Chemin corrigé
+      - "./grafana-datasource-config.yaml:/etc/grafana/provisioning/datasources/datasources.yaml" # Chemin corrigé
       - "./dashboards:/var/lib/grafana/dashboards" # Chemin corrigé
-      - "./default.yml:/etc/grafana/provisioning/dashboards/default.yml" # Chemin corrigé
+      - "./default.yaml:/etc/grafana/provisioning/dashboards/default.yaml" # Chemin corrigé
     privileged: true
     depends_on:
       - prometheus
