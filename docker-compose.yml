@@ -24,7 +24,7 @@ services:
       # - "prometheus-data:/prometheus"
       - "./prometheus.yml:/etc/prometheus/prometheus.yml"
     command:
-      - "--config.file=/etc/prometheus/prometheus.yml"
+      # - "--config.file=/etc/prometheus/prometheus.yml"
       # - "--storage.tsdb.path=/prometheus"
       # - "--storage.tsdb.retention.time=200h"
       - "--web.enable-lifecycle"
