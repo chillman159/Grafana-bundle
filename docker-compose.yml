@@ -61,7 +61,7 @@ services:
     volumes:
       - "grafana-data:/var/lib/grafana"
       - "./grafana-datasource-config.yaml:/etc/grafana/provisioning/datasources/datasources.yaml" # Chemin corrigé
-      - "dashboards/:/var/lib/grafana/dashboards" # Chemin corrigé
+      - "./dashboards/:/var/lib/grafana/dashboards" # Chemin corrigé
       - "./default.yaml:/etc/grafana/provisioning/dashboards/default.yaml" # Chemin corrigé
     privileged: true
     depends_on:
