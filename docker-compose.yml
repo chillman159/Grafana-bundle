@@ -61,8 +61,8 @@ services:
     volumes:
       - "grafana-data:/var/lib/grafana"
       # - "./grafana-datasource-config.yaml:/etc/grafana/provisioning/datasources/datasources.yaml:ro" # Chemin corrigé
-      - "./dashboards/:/var/lib/grafana/dashboards:ro" # Chemin corrigé
-      - "./default.yaml:/etc/grafana/provisioning/dashboards/default.yaml:ro" # Chemin corrigé
+      # - "./dashboards/:/var/lib/grafana/dashboards:ro" # Chemin corrigé
+      # - "./default.yaml:/etc/grafana/provisioning/dashboards/default.yaml:ro" # Chemin corrigé
     privileged: true
     depends_on:
       - prometheus
