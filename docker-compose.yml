@@ -1,47 +1,22 @@
 version: "3"
 services:
   cadvisor:
-    container_name: grafana_bundle-cadvisor
+    container_name: grafana_bundle_ligth-cadvisor
     image: gcr.io/cadvisor/cadvisor:latest
-    networks:
-      - monitoring
     volumes:
-      # - "/:/rootfs"
-      # - "/var/run:/var/run"
-      # - "/sys:/sys"
-      # - "/var/lib/docker/:/var/lib/docker"
       - /:/rootfs:ro
       - /var/run:/var/run:rw
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
       - "/dev/disk/:/dev/disk:rw"
-
-    privileged: true
     devices:
       - "/dev/kmsg"
 
   prometheus:
-    container_name: grafana_bundle-prometheus
+    container_name: grafana_bundle_ligth-prometheus
     image: prom/prometheus:latest
-    networks:
-      - monitoring
-    # volumes:
-    # - "prometheus-data:/prometheus"
-    # - "./prometheus.yml:/etc/prometheus/prometheus.yml"
-    # command:
-    # - "--config.file=/etc/prometheus/prometheus.yml"
-    # - "--storage.tsdb.path=/prometheus"
-    # - "--storage.tsdb.retention.time=200h"
-    # - "--web.enable-lifecycle"
-    # volumes:
-    #   - "./prometheus.yml:/etc/prometheus/prometheus.yml:ro"
-    #   # - "/data/docker/volumes/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro"
     ports:
       - "9090:9090"
-    # command:
-    #   - "--config.file=/etc/prometheus/prometheus.yml"
-
-    privileged: true
     depends_on:
       - cadvisor
     logging:
@@ -51,19 +26,13 @@ services:
         max-file: "10"
 
   grafana:
-    container_name: grafana_bundle-grafana
+    container_name: grafana_bundle_ligth-grafana
     image: grafana/grafana:latest
-    networks:
-      - monitoring
     environment:
       - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
       - DS_PROMETHEUS=prometheus
     volumes:
       - "grafana-data:/var/lib/grafana"
-      # - "./grafana-datasource-config.yaml:/etc/grafana/provisioning/datasources/datasources.yaml:ro" # Chemin corrigé
-      # - "./dashboards/:/var/lib/grafana/dashboards:ro" # Chemin corrigé
-      # - "./default.yaml:/etc/grafana/provisioning/dashboards/default.yaml:ro" # Chemin corrigé
-    privileged: true
     depends_on:
       - prometheus
     logging:
@@ -72,28 +41,20 @@ services:
         max-size: "200m"
         max-file: "10"
 
-  nginx:
-    image: nginx:latest
-    container_name: grafana_bundle-nginx
-    volumes:
-      # - "./nginx.conf:/etc/nginx/nginx.conf" # Chemin corrigé
-      # - "./nginx.conf:/etc/nginx/sites-available/default.conf" # Chemin corrigé
-      - "./nginx.conf:/etc/nginx/sites-available/default" # Chemin corrigé
-      - "nginx-logs:/var/log/nginx"
-    ports:
-      - "9393:9090" # Exposition de Nginx pour Prometheus
-      - "3030:3000" # Exposition de Nginx pour Grafana
-    networks:
-      - monitoring
-    depends_on:
-      - prometheus
-      - grafana
+  # nginx:
+  #   image: nginx:latest
+  #   container_name: grafana_bundle_ligth-nginx
+  #   volumes:
+  #     - "./nginx.conf:/etc/nginx/sites-available/default" # Chemin corrigé
+  #     - "nginx-logs:/var/log/nginx"
+  #   ports:
+  #     - "9090:9090" # Exposition de Nginx pour Prometheus
+  #     - "3030:3000" # Exposition de Nginx pour Grafana
+  #   depends_on:
+  #     - prometheus
+  #     - grafana
 
 volumes:
   grafana-data:
   prometheus-data:
-  nginx-logs:
-
-networks:
-  monitoring:
-    driver: bridge
+  # nginx-logs:
