@@ -12,7 +12,7 @@ networks:
 services:
   cadvisor:
     container_name: grafana_bundle_full-cadvisor
-    image: gcr.io/cadvisor/cadvisor:latest
+    image: gcr.io/cadvisor/cadvisor
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:rw
@@ -62,7 +62,7 @@ services:
 
   grafana:
     container_name: grafana_bundle_full-grafana
-    image: grafana/grafana:latest
+    image: grafana/grafana
     environment:
       - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
       - DS_PROMETHEUS=prometheus
