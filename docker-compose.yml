@@ -1,4 +1,4 @@
-version: "2"
+version: "3"
 services:
   cadvisor:
     container_name: cadvisor
@@ -60,9 +60,9 @@ services:
       - DS_PROMETHEUS=prometheus
     volumes:
       - "grafana-data:/var/lib/grafana"
-      - "grafana-datasource-config.yaml:/etc/grafana/provisioning/datasources/datasources.yaml" # Chemin corrigé
-      - "dashboards:/var/lib/grafana/dashboards" # Chemin corrigé
-      - "default.yaml:/etc/grafana/provisioning/dashboards/default.yaml" # Chemin corrigé
+      - "./grafana-datasource-config.yaml:/etc/grafana/provisioning/datasources/datasources.yaml" # Chemin corrigé
+      - "dashboards/:/var/lib/grafana/dashboards" # Chemin corrigé
+      - "./default.yaml:/etc/grafana/provisioning/dashboards/default.yaml" # Chemin corrigé
     privileged: true
     depends_on:
       - prometheus
