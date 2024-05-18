@@ -19,9 +19,9 @@ services:
       - "9090:9090"
     volumes:
       - "prometheus-data:/prometheus:rw"
-      - "./prometheus.yml:/etc/prometheus/prometheus.yml:rw"
+      - "./prometheus.yml:/prometheus/prometheus.yml:rw"
     command:
-      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--config.file=/prometheus/prometheus.yml"
       - "--storage.tsdb.path=/prometheus"
       - "--storage.tsdb.retention.time=200h"
       - "--web.enable-lifecycle"
