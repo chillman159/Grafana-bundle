@@ -47,7 +47,7 @@ services:
       - "--web.console.templates=/usr/share/prometheus/consoles"
     links:
       - cadvisor:cadvisor
-      # - alertmanager:alertmanager
+      - alertmanager:alertmanager
     depends_on:
       - cadvisor
     networks:
