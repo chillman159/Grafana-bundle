@@ -1,7 +1,7 @@
 version: "3"
 services:
   cadvisor:
-    container_name: cadvisor
+    container_name: grafana_bundle-cadvisor
     image: gcr.io/cadvisor/cadvisor:latest
     networks:
       - monitoring
@@ -21,7 +21,7 @@ services:
       - "/dev/kmsg"
 
   prometheus:
-    container_name: prometheus
+    container_name: grafana_bundle-prometheus
     image: prom/prometheus:latest
     networks:
       - monitoring
@@ -51,7 +51,7 @@ services:
         max-file: "10"
 
   grafana:
-    container_name: grafana
+    container_name: grafana_bundle-grafana
     image: grafana/grafana:latest
     networks:
       - monitoring
@@ -74,6 +74,7 @@ services:
 
   nginx:
     image: nginx:latest
+    container_name: grafana_bundle-nginx
     volumes:
       # - "./nginx.conf:/etc/nginx/nginx.conf" # Chemin corrigé
       # - "./nginx.conf:/etc/nginx/sites-available/default.conf" # Chemin corrigé
