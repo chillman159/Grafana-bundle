@@ -31,6 +31,6 @@ scrape_configs:
   - job_name: "prometheus"
     static_configs:
       - targets: ["localhost:9090"]
-    # file_sd_configs:
-    #   - files:
-    #       - "/etc/prometheus/file_sd_configs.yml"
+    file_sd_configs:
+      - files:
+          - "/etc/prometheus/file_sd_configs.yml"
