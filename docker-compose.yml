@@ -19,7 +19,7 @@ services:
       - "9090:9090"
     volumes:
       - "prometheus-data:/prometheus:rw"
-      - "./prometheus.yml:prometheus/prometheus.yml:rw"
+      - "./prometheus.yml:/prometheus/prometheus.yml:rw"
     depends_on:
       - cadvisor
     logging:
