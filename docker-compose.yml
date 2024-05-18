@@ -6,11 +6,16 @@ services:
     networks:
       - monitoring
     volumes:
-      - "/:/rootfs"
-      - "/var/run:/var/run"
-      - "/sys:/sys"
-      - "/var/lib/docker/:/var/lib/docker"
-      - "/dev/disk/:/dev/disk"
+      # - "/:/rootfs"
+      # - "/var/run:/var/run"
+      # - "/sys:/sys"
+      # - "/var/lib/docker/:/var/lib/docker"
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - "/dev/disk/:/dev/disk:rw"
+
     privileged: true
     devices:
       - "/dev/kmsg"
@@ -28,6 +33,10 @@ services:
     # - "--storage.tsdb.path=/prometheus"
     # - "--storage.tsdb.retention.time=200h"
     # - "--web.enable-lifecycle"
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
     ports:
       - "9090:9090"
 
