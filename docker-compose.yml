@@ -1,7 +1,17 @@
-version: "3"
+version: "3.7"
+
+volumes:
+  grafana-data: {}
+  prometheus-data: {}
+  # nginx-logs:
+
+networks:
+  front-tier:
+  back-tier:
+
 services:
   cadvisor:
-    container_name: grafana_bundle_ligth-cadvisor
+    container_name: grafana_bundle_full-cadvisor
     image: gcr.io/cadvisor/cadvisor:latest
     volumes:
       - /:/rootfs:ro
@@ -11,22 +21,39 @@ services:
       - "/dev/disk/:/dev/disk:rw"
     devices:
       - "/dev/kmsg"
+    ports:
+      - 8080:8080
+    networks:
+      - back-tier
+    restart: always
+    deploy:
+      mode: global
 
   prometheus:
-    container_name: grafana_bundle_ligth-prometheus
-    image: prom/prometheus:latest
+    container_name: grafana_bundle_full-prometheus
+    # image: prom/prometheus:latest
+    image: prom/prometheus:v2.36.2
     ports:
       - "9090:9090"
     volumes:
       - "prometheus-data:/prometheus:rw"
-      - "prometheus.yml:/prometheus/prometheus.yml:rw"
+      - "./prometheus.yml:/prometheus/prometheus.yml:rw"
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
       - "--storage.tsdb.path=/etc/prometheus"
       - "--storage.tsdb.retention.time=200h"
       - "--web.enable-lifecycle"
+      - "--web.console.libraries=/usr/share/prometheus/console_libraries"
+      - "--web.console.templates=/usr/share/prometheus/consoles"
+    links:
+      - cadvisor:cadvisor
+      # - alertmanager:alertmanager
     depends_on:
       - cadvisor
+    networks:
+      - back-tier
+    # restart: always
+
     logging:
       driver: json-file
       options:
@@ -34,24 +61,67 @@ services:
         max-file: "10"
 
   grafana:
-    container_name: grafana_bundle_ligth-grafana
+    container_name: grafana_bundle_full-grafana
     image: grafana/grafana:latest
     environment:
       - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
       - DS_PROMETHEUS=prometheus
     volumes:
-      - "grafana-data:/var/lib/grafana"
+      - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+    env_file:
+      - ./grafana/config.monitoring
+    ports:
+      - 3000:3000
     depends_on:
       - prometheus
+    networks:
+      - back-tier
+      - front-tier
+    # restart: always
     logging:
       driver: json-file
       options:
         max-size: "200m"
         max-file: "10"
 
+  node-exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+      - /:/host:ro,rslave
+    command:
+      - "--path.rootfs=/host"
+      - "--path.procfs=/host/proc"
+      - "--path.sysfs=/host/sys"
+      - --collector.filesystem.ignored-mount-points
+      - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
+    ports:
+      - 9100:9100
+    networks:
+      - back-tier
+    restart: always
+    deploy:
+      mode: global
+
+  alertmanager:
+    image: prom/alertmanager
+    ports:
+      - 9093:9093
+    volumes:
+      - ./alertmanager/:/etc/alertmanager/
+    networks:
+      - back-tier
+    restart: always
+    command:
+      - "--config.file=/etc/alertmanager/config.yml"
+      - "--storage.path=/alertmanager"
+
   # nginx:
   #   image: nginx:latest
-  #   container_name: grafana_bundle_ligth-nginx
+  #   container_name: grafana_bundle_full-nginx
   #   volumes:
   #     - "./nginx.conf:/etc/nginx/sites-available/default" # Chemin corrigé
   #     - "nginx-logs:/var/log/nginx"
@@ -61,8 +131,3 @@ services:
   #   depends_on:
   #     - prometheus
   #     - grafana
-
-volumes:
-  grafana-data:
-  prometheus-data:
-  # nginx-logs:
