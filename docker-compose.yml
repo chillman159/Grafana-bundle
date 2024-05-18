@@ -33,13 +33,13 @@ services:
     # - "--storage.tsdb.path=/prometheus"
     # - "--storage.tsdb.retention.time=200h"
     # - "--web.enable-lifecycle"
-    volumes:
-      - "./prometheus.yml:/etc/prometheus/prometheus.yml:ro"
-      # - "/data/docker/volumes/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro"
+    # volumes:
+    #   - "./prometheus.yml:/etc/prometheus/prometheus.yml:ro"
+    #   # - "/data/docker/volumes/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro"
     ports:
       - "9090:9090"
-    command:
-      - "--config.file=/etc/prometheus/prometheus.yml"
+    # command:
+    #   - "--config.file=/etc/prometheus/prometheus.yml"
 
     privileged: true
     depends_on:
