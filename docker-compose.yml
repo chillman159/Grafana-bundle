@@ -17,6 +17,9 @@ services:
     image: prom/prometheus:latest
     ports:
       - "9090:9090"
+    volumes:
+      - "prometheus-data:/prometheus"
+      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
     depends_on:
       - cadvisor
     logging:
